@@ -6,7 +6,7 @@
 	<groupId>com.infogain</groupId>
 	<artifactId>sb-note</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 
 	<name>sb-note</name>
 	<description>Notes project for Spring Boot</description>
