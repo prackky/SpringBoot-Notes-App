@@ -111,7 +111,11 @@ public class UserController {
 		}
 		//Cookie cookie = CookieUtil.create(response, jwtTokenCookieName, jwtToken, false, -1, "localhost");
 		//return new ResponseEntity<String>(jwtToken, HttpStatus.ACCEPTED);
-		return new ResponseEntity<String>("Bearer " + jwtToken, HttpStatus.OK);
+		//return new ResponseEntity<String>("Bearer " + jwtToken, HttpStatus.OK);
+	    	String jsonString = "{'status':'success', 'token':'" + "Bearer " + jwtToken + "}";
+		ObjectMapper mapper = new ObjectMapper();
+		Object obj = mapper.writeValueAsString(jsonString);
+		return new ResponseEntity<Object>(obj, HttpStatus.OK);
 	}
 
 }
