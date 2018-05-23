@@ -113,7 +113,7 @@ public class UserController {
 		}
 		//Cookie cookie = CookieUtil.create(response, jwtTokenCookieName, jwtToken, false, -1, "localhost");
 		//return new ResponseEntity<String>(jwtToken, HttpStatus.ACCEPTED);
-		String jsonString = "{'status':'success', 'token':'" + "Bearer " + jwtToken + "}";
+		String jsonString = "{'status':'success', 'token':'" + "Bearer " + jwtToken + "'}";
 		ObjectMapper mapper = new ObjectMapper();
 		Object obj = mapper.writeValueAsString(jsonString);
 		return new ResponseEntity<Object>(obj, HttpStatus.OK);
