@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sbnote.model.User;
 import com.sbnote.service.UserService;
 import com.sbnote.utility.IdManager;
@@ -80,7 +81,7 @@ public class UserController {
 	}
 	)
     @PostMapping(value = "/login")
-    public ResponseEntity<?> login(@RequestBody User login) throws ServletException {
+    public ResponseEntity<?> login(@RequestBody User login) throws ServletException, JsonProcessingException {
 
 		String jwtToken = "";
 
@@ -112,8 +113,7 @@ public class UserController {
 		}
 		//Cookie cookie = CookieUtil.create(response, jwtTokenCookieName, jwtToken, false, -1, "localhost");
 		//return new ResponseEntity<String>(jwtToken, HttpStatus.ACCEPTED);
-		//return new ResponseEntity<String>("Bearer " + jwtToken, HttpStatus.OK);
-	    	String jsonString = "{'status':'success', 'token':'" + "Bearer " + jwtToken + "}";
+		String jsonString = "{'status':'success', 'token':'" + "Bearer " + jwtToken + "}";
 		ObjectMapper mapper = new ObjectMapper();
 		Object obj = mapper.writeValueAsString(jsonString);
 		return new ResponseEntity<Object>(obj, HttpStatus.OK);
