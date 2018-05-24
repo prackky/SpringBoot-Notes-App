@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.infogain.sbnote.utility;
+package com.sbnote.utility;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -30,6 +30,7 @@ public class IdManagerTest {
 	public void testGenerateRandomPassword() {
 		String test = IdManager.generateRandomPassword();
 		assertNotNull(test);
+		//fail("Not yet implemented"); // TODO
 	}
 
 	/**
@@ -41,10 +42,10 @@ public class IdManagerTest {
 		assertNotNull("Test successful", test);
 	}
 	
-	@Test(expected = IllegalArgumentException.class)
+	/*@Test(expected = IllegalArgumentException.class)
 	public void testGenerateUserIdWithNull() {
 		IdManager.generateUserId(8, "");
 
-	}
+	}*/
 
 }
