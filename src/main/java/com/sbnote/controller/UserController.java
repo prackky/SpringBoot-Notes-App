@@ -50,15 +50,21 @@ public class UserController {
 	}
 	)
     @PostMapping(value = "/register")
-    public ResponseEntity<?> createNewUser(@RequestBody User user) {
+    public ResponseEntity<?> createNewUser(@RequestBody User user) throws ServletException {
     	//String message = "";
+		if(user.getPassword()==null || user.getPassword().isEmpty()) {
+			throw new ServletException("Password cannot be empty.");
+		}
+		if(user.getEmail()==null || user.getEmail().isEmpty()) {
+			throw new ServletException("Email cannot be empty.");
+		}
     	User userExists = userService.findByEmail(user.getEmail());
     	if(userExists != null) {
     		System.out.println("Email already exist in database...");
     		return new ResponseEntity<String>("User already exists, please try to login...", HttpStatus.CONFLICT);
     	}
     	else {
-    		String password = IdManager.generateRandomPassword();
+    		String password = user.getPassword();
         	String userId = IdManager.generateUserId(8, user.getName().trim());
         	System.out.println("Password set by user " + user.getEmail() + " : " + password);
         	String encodedPassword = bCryptPasswordEncoder.encode(password);
@@ -67,7 +73,7 @@ public class UserController {
     		boolean userCreated = userService.createUser(user);
     		
     		if(userCreated == true)
-    			user.setPassword(password);
+    			user.setPassword("enCryptedPassword");
     		else
     			return new ResponseEntity<String>("There was some issue creating the user, please try again.."
     					, HttpStatus.CONFLICT);
