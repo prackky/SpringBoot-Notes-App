@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.infogain.sbnote.controller;
+package com.sbnote.controller;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -61,8 +61,8 @@ public class UserControllerTest {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(wac).build();
 		
 		//userReturn = new User("prakhar rastogi", "rastogi.prakhar@live.com");
-		userReturn = new User((long) 2,"prastosb","Tyrion Lannister", "asdjkawhudhwhduawu", "tyrion.lannister@westeros.com");
-		userRegister = new User("Tyrion Lannister", "tyrion.lannister@westeros.com");
+		userReturn = new User((long) 2,"prastosb","Tyrion Lannister", "asdjkawhudhwhdu", "tyrion.lannister@westeros.com");
+		userRegister = new User("Tyrion Lannister", "tyrion.lannister@westeros.com","password");
 		
 		Mockito.when(userService.findByEmail("SUCCESS_TEST@email.com")).thenReturn(null);
 		Mockito.when(userService.findByEmail("FAILURE_TEST@email.com")).thenReturn(userReturn);
@@ -79,7 +79,7 @@ public class UserControllerTest {
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/register")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"name\":\"Tyrion Lannister\",\"email\":\"FAILURE_TEST@email.com\"}")
+				.content("{\"name\":\"Tyrion Lannister\",\"email\":\"FAILURE_TEST@email.com\",\"password\":\"myPassword\"}")
 				.accept(MediaType.APPLICATION_JSON);
 		mockMvc.perform(requestBuilder)
 		.andExpect(status().isConflict());
@@ -95,7 +95,7 @@ public class UserControllerTest {
 		
 		RequestBuilder requestBuilder = MockMvcRequestBuilders.post("/user/register")
 				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"name\":\"Tyrion Lannister\",\"email\":\"SUCCESS_TEST@email.com\"}")
+				.content("{\"name\":\"Tyrion Lannister\",\"email\":\"SUCCESS_TEST@email.com\",\"password\":\"myPassword\"}")
 				.accept(MediaType.APPLICATION_JSON);
 		mockMvc.perform(requestBuilder)
 		.andDo(print())
