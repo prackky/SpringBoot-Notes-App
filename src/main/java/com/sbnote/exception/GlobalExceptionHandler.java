@@ -1,6 +1,7 @@
 package com.sbnote.exception;
 
 import javax.servlet.ServletException;
+import javax.validation.ConstraintViolationException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +33,20 @@ public class GlobalExceptionHandler extends RuntimeException {
 	@ExceptionHandler(ServletException.class)
 	  public final ResponseEntity<?> handleNullPointerException(ServletException ex, WebRequest request) {
 	    SbNoteCustomException sbNoteException = new SbNoteCustomException();
-	    sbNoteException.setCode(HttpStatus.BAD_REQUEST.value());
+	    sbNoteException.setCode(HttpStatus.UNAUTHORIZED.value());
 	    sbNoteException.setMessage(ex.getMessage());
 	    sbNoteException.setDetails(request.getDescription(false));
 	    log.error("ServletException: \n", ex);
+	    return new ResponseEntity<SbNoteCustomException>(sbNoteException, HttpStatus.UNAUTHORIZED);
+	}
+	
+	@ExceptionHandler(ConstraintViolationException.class)
+	  public final ResponseEntity<?> handleConstraintViolationException(ConstraintViolationException ex, WebRequest request) {
+	    SbNoteCustomException sbNoteException = new SbNoteCustomException();
+	    sbNoteException.setCode(HttpStatus.BAD_REQUEST.value());
+	    sbNoteException.setMessage("Please enter valid email address.");
+	    sbNoteException.setDetails(request.getDescription(false));
+	    log.error("ResourceNotFoundException: \n", ex);
 	    return new ResponseEntity<SbNoteCustomException>(sbNoteException, HttpStatus.BAD_REQUEST);
 	}
 	
@@ -51,9 +62,13 @@ public class GlobalExceptionHandler extends RuntimeException {
 	
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
-    public void handleAll(Exception e) {
-        log.error("Unhandled exception occurred", e);
+    public ResponseEntity<SbNoteCustomException> handleAll(Exception ex, WebRequest request) {
+		SbNoteCustomException sbNoteException = new SbNoteCustomException();
+	    sbNoteException.setCode(HttpStatus.INTERNAL_SERVER_ERROR.value());
+	    sbNoteException.setMessage(ex.getLocalizedMessage());
+	    sbNoteException.setDetails(request.getDescription(false));
+	    log.error("Unhandled exception occurred: \n", ex);
+	    return new ResponseEntity<SbNoteCustomException>(sbNoteException, HttpStatus.INTERNAL_SERVER_ERROR);
     }
-	
 }
 
